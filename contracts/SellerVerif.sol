@@ -81,7 +81,7 @@ contract SellerVerif {
         }
         return viewData;
     }
-    
+
 
     function viewStatus(address _user) external view returns(VerfificationStatus){
         return sellerVerification[keccak256(abi.encodePacked(_user))];
