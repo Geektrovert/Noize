@@ -34,5 +34,5 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-contracts/artifacts/*
+artifacts
 .deps/*
