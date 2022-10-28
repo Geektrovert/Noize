@@ -6,9 +6,8 @@ import {
   Button,
   Image,
   Icon,
-  Box,
 } from "@chakra-ui/react";
-import { FiKey, FiHexagon } from "react-icons/fi";
+import { FiKey, FiHexagon, FiRewind } from "react-icons/fi";
 
 export default function CallToActionWithVideo() {
   return (
@@ -66,9 +65,18 @@ export default function CallToActionWithVideo() {
 
         <Stack spacing={2} direction="column" fontSize="md">
           {[
-            { icon: FiHexagon, text: "P2P marketplace for creators" },
-            { icon: FiHexagon, text: "P2P marketplace for creators" },
-            { icon: FiHexagon, text: "P2P marketplace for creators" },
+            {
+              icon: FiHexagon,
+              text: "Trustless P2P marketplace",
+            },
+            {
+              icon: FiKey,
+              text: "Anonymous yet verified profiles",
+            },
+            {
+              icon: FiRewind,
+              text: "Carbon offseting made easy",
+            },
           ].map(({ icon, text }, idx) => (
             <Stack key={idx} spacing={2} direction="row" align="center">
               <Flex

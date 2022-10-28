@@ -33,7 +33,7 @@ function MyApp({ Component, pageProps }: AppProps) {
               accentColor: "var(--chakra-colors-purple-600)",
               accentColorForeground: "var(--chakra-colors-purple-50)",
               overlayBlur: "large",
-              borderRadius: "none",
+              borderRadius: "large",
             })}
           >
             <Component {...pageProps} />
