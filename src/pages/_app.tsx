@@ -28,18 +28,13 @@ function MyApp({ Component, pageProps }: AppProps) {
               appName: "Noize",
               learnMoreUrl: "https://crypto.com/university/crypto-wallets",
             }}
-            theme={{
-              lightMode: lightTheme({
-                accentColor: "var(--chakra-colors-purple-500)",
-                accentColorForeground: "var(--chakra-colors-purple-50)",
-                overlayBlur: "large",
-              }),
-              darkMode: midnightTheme({
-                accentColor: "var(--chakra-colors-purple-50)",
-                accentColorForeground: "var(--chakra-colors-purple-500)",
-                overlayBlur: "large",
-              }),
-            }}
+            modalSize="compact"
+            theme={midnightTheme({
+              accentColor: "var(--chakra-colors-purple-600)",
+              accentColorForeground: "var(--chakra-colors-purple-50)",
+              overlayBlur: "large",
+              borderRadius: "none",
+            })}
           >
             <Component {...pageProps} />
           </RainbowKitProvider>
