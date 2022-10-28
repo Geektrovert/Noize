@@ -64,14 +64,14 @@ contract SellerVerif {
 
     function viewPending() onlyVerifier(msg.sender) external view returns (ViewData[] memory) {
         uint counter = 0;
-        for (uint i=0; i<sellerData.length; i++) {
+        for (uint i=1; i<sellerData.length; i++) {
             if (sellerVerification[sellerData[i].sellerAddress] == VerfificationStatus.NOT_PROCESSED) {
                 counter += 1;
             }
         }
-        counter = 0;
         ViewData[] memory viewData = new ViewData[](counter);
-        for (uint i=0; i<sellerData.length; i++) {
+        counter = 0;
+        for (uint i=1; i<sellerData.length; i++) {
             if (sellerVerification[sellerData[i].sellerAddress] == VerfificationStatus.NOT_PROCESSED) {
                 viewData[counter] = ViewData({
                     nid: sellerData[i].nid,
@@ -91,6 +91,8 @@ contract SellerVerif {
         if (status == VerfificationStatus.VERIFIED && keccak256(abi.encodePacked(_name)) == sellerData[id].name) {
             sellerVerification[sellerData[id].sellerAddress] = VerfificationStatus.VERIFIED;
         } else if (status == VerfificationStatus.UNVERIFIED) {
+            sellerVerification[sellerData[id].sellerAddress] = VerfificationStatus.UNVERIFIED;
+        } else if (status == VerfificationStatus.VERIFIED && keccak256(abi.encodePacked(_name)) != sellerData[id].name) {
             sellerVerification[sellerData[id].sellerAddress] = VerfificationStatus.UNVERIFIED;
         }
     }
