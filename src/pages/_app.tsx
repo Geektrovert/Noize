@@ -7,6 +7,9 @@ import {
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { WagmiConfig } from "wagmi";
 import "@rainbow-me/rainbowkit/styles.css";
+import "@fontsource/bebas-neue";
+import "@fontsource/inter";
+import "@fontsource/jetbrains-mono/400.css";
 
 import theme from "../theme";
 import { AppProps } from "next/app";
