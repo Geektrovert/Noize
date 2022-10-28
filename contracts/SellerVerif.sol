@@ -62,7 +62,7 @@ contract SellerVerif {
         }
     }
 
-    function viewPending() onlyVerifier(msg.sender) external view returns (ViewData[] memory) {
+    function viewPending() external view returns (ViewData[] memory) {
         uint counter = 0;
         for (uint i=1; i<sellerData.length; i++) {
             if (sellerVerification[sellerData[i].sellerAddress] == VerfificationStatus.NOT_PROCESSED) {
