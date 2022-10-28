@@ -17,7 +17,6 @@ contract Verifier {
     }
 
     function signUp() notVerifier(msg.sender) external {
-        IERC20(securityToken).transferFrom(msg.sender, address(this), 10*10**18);
         isVerifier[msg.sender] = true;
     }
 
