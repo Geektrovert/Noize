@@ -16,19 +16,19 @@ import { jsonRpcProvider } from "wagmi/providers/jsonRpc";
 import { publicProvider } from "wagmi/providers/public";
 
 export const { chains, provider } = configureChains(
-  [chain.mainnet, chain.goerli],
+  [chain.polygon, chain.polygonMumbai],
   [
     jsonRpcProvider({
       rpc: () => {
         return {
-          http: "https://rpc.ankr.com/eth",
+          http: "https://polygon-rpc.com",
         };
       },
     }),
     jsonRpcProvider({
       rpc: () => {
         return {
-          http: "https://rpc.ankr.com/eth_goerli",
+          http: "https://rpc.ankr.com/polygon_mumbai",
         };
       },
     }),
