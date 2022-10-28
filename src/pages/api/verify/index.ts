@@ -9,7 +9,7 @@ export default async function handler(
   if (req.method === "POST") {
     const { nid, name } = req.body;
     const hashName =
-      keccak256(name).toString("hex") + process.env.DIGEST;
+      "0x" + keccak256(name + process.env.DIGEST).toString("hex");
     const encryptNID = CryptoJS.AES.encrypt(
       nid,
       process.env.SECRET_KEY as string
