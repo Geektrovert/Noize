@@ -59,7 +59,7 @@ export default function NavBar() {
           display={{ md: "none" }}
           onClick={isOpen ? onClose : onOpen}
         />
-        <Box display={{ base: "none", lg: "block" }}>
+        <Box as={Link} href="/" display={{ base: "none", lg: "block" }}>
           <Image src={logo} alt="Noize Logo" />
         </Box>
         <HStack spacing={8} alignItems={"center"}>

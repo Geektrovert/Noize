@@ -4,18 +4,8 @@ import ProductCreateForm from "../components/createProduct";
 
 export default function Store() {
   return (
-    <Box minH="100vh">
+    <Box h="100%">
       <ProductCreateForm />
-      <Box
-        bgImage="url('/bg.webp')"
-        bgSize="cover"
-        position="fixed"
-        top="0"
-        left="0"
-        w="100vw"
-        h="100vh"
-        zIndex="-1"
-      />
     </Box>
   );
 }
