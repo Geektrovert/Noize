@@ -18,6 +18,11 @@ contract SellerVerif {
         bytes32 sellerAddress;
     }
 
+    struct ViewData {
+        uint index;
+        string nid;
+    }
+
     mapping (bytes32 => VerfificationStatus) private sellerVerification;
     mapping (address => uint) private sellerIndex;
     Data[] private sellerData;
@@ -55,6 +60,26 @@ contract SellerVerif {
             sellerData[sellerIndex[msg.sender]].nid = _nid;
             sellerData[sellerIndex[msg.sender]].name = _name;
         }
+    }
+
+    function viewPending() onlyVerifier(msg.sender) external view returns (ViewData[] memory) {
+        uint counter = 0;
+        for (uint i=0; i<sellerData.length; i++) {
+            if (sellerVerification[sellerData[i].sellerAddress] == VerfificationStatus.NOT_PROCESSED) {
+                counter += 1;
+            }
+        }
+        counter = 0;
+        ViewData[] memory viewData = new ViewData[](counter);
+        for (uint i=0; i<sellerData.length; i++) {
+            if (sellerVerification[sellerData[i].sellerAddress] == VerfificationStatus.NOT_PROCESSED) {
+                viewData[counter] = ViewData({
+                    nid: sellerData[i].nid,
+                    index: i
+                });
+            }
+        }
+        return viewData;
     }
     
 
