@@ -9,10 +9,10 @@ export default async function handler(
   if (req.method === "POST") {
     const { nid, name } = req.body;
     const hashName =
-      keccak256(name).toString("hex") + process.env.REACT_APP_DIGEST;
+      keccak256(name).toString("hex") + process.env.DIGEST;
     const encryptNID = CryptoJS.AES.encrypt(
       nid,
-      process.env.REACT_APP_SECRET_KEY
+      process.env.SECRET_KEY as string
     ).toString();
     return res.status(200).json({ hashName, encryptNID });
   }
