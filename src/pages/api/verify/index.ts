@@ -14,6 +14,6 @@ export default async function handler(
       nid,
       process.env.REACT_APP_SECRET_KEY
     ).toString();
-    console.log(hashName, encryptNID);
+    return res.status(200).json({ hashName, encryptNID });
   }
 }
