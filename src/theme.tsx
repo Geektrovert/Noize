@@ -1,4 +1,4 @@
-import { extendTheme } from "@chakra-ui/react";
+import { extendTheme, type ThemeConfig } from "@chakra-ui/react";
 
 const fonts = {
   heading: `'Bebas Neue', serif`,
@@ -6,7 +6,7 @@ const fonts = {
   mono: `'JetBrains Mono', monospace`,
 };
 
-const theme = extendTheme({
+const theme: ThemeConfig = extendTheme({
   semanticTokens: {
     colors: {
       text: {
@@ -27,6 +27,8 @@ const theme = extendTheme({
     black: "#16161D",
   },
   fonts,
+  initialColorMode: "dark",
+  useSystemColorMode: false,
 });
 
 export default theme;
