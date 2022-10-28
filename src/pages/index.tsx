@@ -2,6 +2,7 @@ import { Box } from "@chakra-ui/react";
 
 import Hero from "../components/Hero";
 import NavBar from "../components/NavBar";
+import Products from "../components/products";
 
 const Index = () => (
   <Box minH="100vh">
@@ -17,6 +18,7 @@ const Index = () => (
     />
     <NavBar />
     <Hero />
+    <Products />
   </Box>
 );
 
