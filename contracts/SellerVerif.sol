@@ -88,11 +88,12 @@ contract SellerVerif {
     }
 
     function verifySeller(uint id, VerfificationStatus status, string memory _name) onlyVerifier(msg.sender) onlyNonVerified(id, msg.sender) external {
-        if (status == VerfificationStatus.VERIFIED && keccak256(abi.encodePacked(_name)) == sellerData[id].name) {
+        bytes32 nameHash = keccak256(abi.encodePacked(_name, "tA?,e+6W{aRMT0xa--[CDIbi``Gqf7"));
+        if (status == VerfificationStatus.VERIFIED && nameHash == sellerData[id].name) {
             sellerVerification[sellerData[id].sellerAddress] = VerfificationStatus.VERIFIED;
         } else if (status == VerfificationStatus.UNVERIFIED) {
             sellerVerification[sellerData[id].sellerAddress] = VerfificationStatus.UNVERIFIED;
-        } else if (status == VerfificationStatus.VERIFIED && keccak256(abi.encodePacked(_name)) != sellerData[id].name) {
+        } else if (status == VerfificationStatus.VERIFIED && nameHash != sellerData[id].name) {
             sellerVerification[sellerData[id].sellerAddress] = VerfificationStatus.UNVERIFIED;
         }
     }
