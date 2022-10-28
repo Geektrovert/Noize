@@ -21,4 +21,7 @@ contract Verifier {
         isVerifier[msg.sender] = true;
     }
 
+    function confirmVerifier(address _user) external view returns (bool) {
+        return isVerifier[_user];
+    }
 }
