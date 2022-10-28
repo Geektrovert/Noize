@@ -14,7 +14,12 @@ contract Store{
     }
     Product[] private products;
     address private tokenAddress;
-    address private contractOwner;
+
+    event ProductSold(uint index, address owner);
+
+    constructor (address _tokenAddress) {
+        tokenAddress = _tokenAddress;
+    }
 
     function createProduct(
         string memory _name,
@@ -33,12 +38,14 @@ contract Store{
         products.push(newProduct);
     }
 
-    function getAllProducts(){
-
+    function getAllProducts() external view returns (Product[] memory) {
+        return products;
     }
 
-    function buyproduct(){
-
+    function buyproduct(uint id)external{
+        IERC20(tokenAddress).transferFrom(msg.sender, products[id].creator, products[id].price);
+        products[id].owner = msg.sender;
+        emit ProductSold(id, msg.sender);
     }
 
 
