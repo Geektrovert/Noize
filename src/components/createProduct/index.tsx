@@ -14,18 +14,16 @@ import {
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useContract, useAccount, useSigner } from "wagmi";
+import { useAccount, useSigner } from "wagmi";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 
 import getWeb3Storage from "../../libs/web3.storage";
 import { productSchema, type ProductSchema } from "../../schemas/productSchema";
-import { STORE_CONTRACT_ADDRESS } from "../../configs/constants";
-import storeABI from "../../abis/store.json";
+import useStoreContract from "../../hooks/useStoreContract";
 
 export default function JoinOurTeam() {
   const toast = useToast();
   const { address } = useAccount();
-  const { data: signer } = useSigner();
   const web3Storage = getWeb3Storage();
   const {
     register,
@@ -37,16 +35,12 @@ export default function JoinOurTeam() {
     resolver: yupResolver(productSchema),
   });
 
-  const contract = useContract({
-    address: STORE_CONTRACT_ADDRESS,
-    abi: storeABI,
-    signerOrProvider: signer,
-  });
+  const storeContract = useStoreContract();
 
   const onSubmit = async (data: ProductSchema) => {
     try {
       const CID = await web3Storage.put([data.image]);
-      const result = await contract?.functions.createProduct(
+      const result = await storeContract?.functions.createProduct(
         data.name,
         data.price,
         CID
