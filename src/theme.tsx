@@ -27,8 +27,10 @@ const theme: ThemeConfig = extendTheme({
     black: "#16161D",
   },
   fonts,
-  initialColorMode: "dark",
-  useSystemColorMode: false,
+  config: {
+    initialColorMode: "dark",
+    useSystemColorMode: false,
+  },
 });
 
 export default theme;
