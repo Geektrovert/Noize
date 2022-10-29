@@ -11,10 +11,12 @@ import {
 } from "@chakra-ui/react";
 
 import usePendingVerifications from "../hooks/usePendingVerifications";
+import useConfirmVerification from "../hooks/useConfirmVerification";
 
 export default function Verifier() {
   const [nameForNID, setNameForNID] = useState<Record<string, string>>({});
   const { data } = usePendingVerifications();
+  const confirmVerification = useConfirmVerification();
 
   return (
     <Box minH="100vh" px={{ base: 4, lg: 18, xl: 24 }} py={{ base: 8 }}>
@@ -62,11 +64,18 @@ export default function Verifier() {
                   }}
                 />
                 <Button
-                  size="sm"
+                  bgColor="red.500"
+                  color="purple.50"
+                  _hover={{ bgColor: "red.600" }}
+                  onClick={() => confirmVerification(index, 2, "")}
+                >
+                  Reject
+                </Button>
+                <Button
                   bgColor="green.500"
                   color="purple.50"
                   _hover={{ bgColor: "green.600" }}
-                  rounded="full"
+                  onClick={() => confirmVerification(index, 1, nameForNID[nid])}
                 >
                   Verify
                 </Button>
