@@ -11,6 +11,7 @@ import theme from "../theme";
 import { AppProps } from "next/app";
 import { wagmiClient, chains } from "../configs/rainbowKit";
 import NavBar from "../components/NavBar";
+import Footer from "../components/Footer";
 
 const queryClient = new QueryClient();
 
@@ -36,6 +37,7 @@ function MyApp({ Component, pageProps }: AppProps) {
             <Box minH="100vh">
               <NavBar />
               <Component {...pageProps} />
+              <Footer />
               <Box
                 bgImage="url('/bg.webp')"
                 bgSize="cover"

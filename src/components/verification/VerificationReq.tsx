@@ -22,6 +22,7 @@ import {
 } from "../../schemas/verificationReqSchema";
 import useEncryptVerificationData from "../../hooks/useEncryptVerificationData";
 import { verificationAtom } from "../../atoms/verificationAtom";
+import useSendVerificationReq from "../../hooks/useSendVerificationReq";
 
 type VerificationReqModalProps = {
   isOpen: boolean;
@@ -33,6 +34,7 @@ export default function VerificationReqModal({
   onClose,
 }: VerificationReqModalProps) {
   const { mutateAsync: encrypt, isLoading } = useEncryptVerificationData();
+  const sendVerificationReq = useSendVerificationReq();
   const {
     register,
     handleSubmit,
@@ -46,6 +48,7 @@ export default function VerificationReqModal({
     encrypt(data)
       .then(() => {
         console.log(encryptedData);
+        sendVerificationReq({ ...encryptedData! });
       })
       .finally(onClose);
 
