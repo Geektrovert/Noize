@@ -6,7 +6,7 @@ const fonts = {
   mono: `'JetBrains Mono', monospace`,
 };
 
-const theme: ThemeConfig = extendTheme({
+const theme = extendTheme({
   semanticTokens: {
     colors: {
       text: {
