@@ -10,20 +10,25 @@ import {
   FormControl,
   FormErrorMessage,
   useToast,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useAccount } from "wagmi";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { uuid } from "uuidv4";
+import dynamic from "next/dynamic";
 
 import { USDC_MULTIPLIER } from "../../configs/constants";
 import getWeb3Storage from "../../libs/web3.storage";
 import { productSchema, type ProductSchema } from "../../schemas/productSchema";
 import useStoreContract from "../../hooks/useStoreContract";
 
+const VerificationReqModal = dynamic(import("../verification/VerificationReq"));
+
 export default function JoinOurTeam() {
   const toast = useToast();
+  const verificationReqModal = useDisclosure();
   const { address } = useAccount();
   const web3Storage = getWeb3Storage();
   const {
@@ -168,20 +173,34 @@ export default function JoinOurTeam() {
           </Stack>
 
           {address ? (
-            <Button
-              type="submit"
-              mt={8}
-              w="full"
-              rounded="full"
-              bgGradient="linear(to-r, pink.500, purple.500)"
-              _hover={{
-                bgGradient: "linear(to-r, red.500, pink.500)",
-                fontWeight: 800,
-              }}
-              isLoading={isSubmitting}
-            >
-              Submit
-            </Button>
+            <Stack direction="column" spacing={4} mt={8}>
+              <Button
+                type="submit"
+                w="full"
+                rounded="full"
+                bgGradient="linear(to-r, pink.500, purple.500)"
+                _hover={{
+                  bgGradient: "linear(to-r, red.500, pink.500)",
+                  fontWeight: 800,
+                }}
+                isLoading={isSubmitting}
+              >
+                Submit
+              </Button>
+              <Button
+                w="full"
+                rounded="full"
+                bgColor="blackAlpha.100"
+                color="gray.800"
+                _hover={{
+                  fontWeight: 800,
+                  bgColor: "blackAlpha.200",
+                }}
+                onClick={verificationReqModal.onOpen}
+              >
+                Get Verified
+              </Button>
+            </Stack>
           ) : (
             <Flex mt={3} justify="center">
               <ConnectButton />
@@ -189,6 +208,8 @@ export default function JoinOurTeam() {
           )}
         </Box>
       </Stack>
+
+      <VerificationReqModal {...verificationReqModal} />
     </Container>
   );
 }
