@@ -3,7 +3,7 @@ import {
   Box,
   Flex,
   HStack,
-  Link,
+  Link as ChakraLink,
   IconButton,
   useDisclosure,
   Stack,
@@ -11,13 +11,24 @@ import {
 import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import Image from "next/image";
+import Link from "next/link";
 
 import logo from "../../public/logo.png";
 
-const Links = ["Explore", "Create"];
+const Links = [
+  {
+    title: "Explore",
+    url: "/explore",
+  },
+  {
+    title: "Create",
+    url: "/create",
+  },
+];
 
-const NavLink = ({ children }: { children: ReactNode }) => (
-  <Link
+const NavLink = ({ children, url }: { children: ReactNode; url: string }) => (
+  <ChakraLink
+    as={Link}
     px={2}
     py={1}
     rounded={"md"}
@@ -25,10 +36,10 @@ const NavLink = ({ children }: { children: ReactNode }) => (
       textDecoration: "none",
       fontWeight: 800,
     }}
-    href={"#"}
+    href={url}
   >
     {children}
-  </Link>
+  </ChakraLink>
 );
 
 export default function NavBar() {
@@ -48,13 +59,15 @@ export default function NavBar() {
           display={{ md: "none" }}
           onClick={isOpen ? onClose : onOpen}
         />
-        <Box display={{ base: "none", lg: "block" }}>
+        <Box as={Link} href="/" display={{ base: "none", lg: "block" }}>
           <Image src={logo} alt="Noize Logo" />
         </Box>
         <HStack spacing={8} alignItems={"center"}>
           <HStack as={"nav"} spacing={4} display={{ base: "none", md: "flex" }}>
-            {Links.map((link) => (
-              <NavLink key={link}>{link}</NavLink>
+            {Links.map(({ title, url }) => (
+              <NavLink key={url} url={url}>
+                {title}
+              </NavLink>
             ))}
           </HStack>
         </HStack>
@@ -65,8 +78,10 @@ export default function NavBar() {
       {isOpen ? (
         <Box pb={4} display={{ md: "none" }}>
           <Stack as={"nav"} spacing={4}>
-            {Links.map((link) => (
-              <NavLink key={link}>{link}</NavLink>
+            {Links.map(({ title, url }) => (
+              <NavLink key={url} url={url}>
+                {title}
+              </NavLink>
             ))}
           </Stack>
         </Box>

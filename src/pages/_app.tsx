@@ -1,9 +1,5 @@
-import { ChakraProvider } from "@chakra-ui/react";
-import {
-  RainbowKitProvider,
-  lightTheme,
-  midnightTheme,
-} from "@rainbow-me/rainbowkit";
+import { ChakraProvider, Box } from "@chakra-ui/react";
+import { RainbowKitProvider, midnightTheme } from "@rainbow-me/rainbowkit";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { WagmiConfig } from "wagmi";
 import "@rainbow-me/rainbowkit/styles.css";
@@ -14,6 +10,7 @@ import "@fontsource/jetbrains-mono/400.css";
 import theme from "../theme";
 import { AppProps } from "next/app";
 import { wagmiClient, chains } from "../configs/rainbowKit";
+import NavBar from "../components/NavBar";
 
 const queryClient = new QueryClient();
 
@@ -36,7 +33,20 @@ function MyApp({ Component, pageProps }: AppProps) {
               borderRadius: "large",
             })}
           >
-            <Component {...pageProps} />
+            <Box minH="100vh">
+              <NavBar />
+              <Component {...pageProps} />
+              <Box
+                bgImage="url('/bg.webp')"
+                bgSize="cover"
+                position="fixed"
+                top="0"
+                left="0"
+                w="100vw"
+                h="100vh"
+                zIndex="-1"
+              />
+            </Box>
           </RainbowKitProvider>
         </WagmiConfig>
       </QueryClientProvider>
