@@ -15,6 +15,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useAccount } from "wagmi";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { uuid } from "uuidv4";
 
 import getWeb3Storage from "../../libs/web3.storage";
 import { productSchema, type ProductSchema } from "../../schemas/productSchema";
@@ -29,7 +30,7 @@ export default function JoinOurTeam() {
     handleSubmit,
     setValue,
     watch,
-    formState: { errors, isSubmitting, isValid },
+    formState: { errors, isSubmitting },
   } = useForm<ProductSchema>({
     resolver: yupResolver(productSchema),
   });
@@ -38,11 +39,18 @@ export default function JoinOurTeam() {
 
   const onSubmit = async (data: ProductSchema) => {
     try {
-      const CID = await web3Storage.put([data.image]);
+      const ext = data.image.name.split(".").pop();
+      const fileName = `${uuid()}.${ext}`;
+      const newFile = new File([data.image], fileName, {
+        type: data.image.type,
+      });
+      const CID = await web3Storage.put([newFile], { name: fileName });
+      const imageURI = `https://${CID}.ipfs.dweb.link/${fileName}`;
+
       const result = await storeContract?.functions.createProduct(
         data.name,
         data.price,
-        CID
+        imageURI
       );
     } catch (error: any) {
       toast({
