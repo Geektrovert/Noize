@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import {
   Box,
   Center,
@@ -8,15 +8,17 @@ import {
   Image,
   Button,
 } from "@chakra-ui/react";
+import { BigNumber } from "ethers";
 
 import useMakePurchase from "../../hooks/useMakePurchase";
+import { USDC_MULTIPLIER } from "../../configs/constants";
 
 export type ProductProps = {
   id: number;
   name: string;
   owner: string;
   creator: string;
-  price: number;
+  price: BigNumber;
   image_url: string;
   sellable: boolean;
 };
@@ -24,6 +26,10 @@ export type ProductProps = {
 export default function Product({ id, name, price, image_url }: ProductProps) {
   const [isLoading, setLoading] = useState(false);
   const makePurchase = useMakePurchase();
+  const formattedPrice = useMemo(
+    () => parseFloat(price.toString()) / USDC_MULTIPLIER,
+    [price]
+  );
 
   return (
     <Center py={12}>
@@ -85,7 +91,7 @@ export default function Product({ id, name, price, image_url }: ProductProps) {
             {name}
           </Heading>
           <Text fontSize="md" color="purple.100">
-            {price.toString()}&nbsp;USDC
+            {formattedPrice}&nbsp;USDC
           </Text>
         </Stack>
 
@@ -102,7 +108,7 @@ export default function Product({ id, name, price, image_url }: ProductProps) {
           loadingText="Purchasing"
           onClick={() => {
             setLoading(true);
-            makePurchase(id, price)
+            makePurchase(id, formattedPrice)
               .catch((e) => console.log(e))
               .finally(() => setLoading(false));
           }}
