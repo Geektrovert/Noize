@@ -17,6 +17,7 @@ import { useAccount } from "wagmi";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { uuid } from "uuidv4";
 
+import { USDC_MULTIPLIER } from "../../configs/constants";
 import getWeb3Storage from "../../libs/web3.storage";
 import { productSchema, type ProductSchema } from "../../schemas/productSchema";
 import useStoreContract from "../../hooks/useStoreContract";
@@ -49,7 +50,7 @@ export default function JoinOurTeam() {
 
       const result = await storeContract?.functions.createProduct(
         data.name,
-        data.price,
+        data.price * USDC_MULTIPLIER,
         imageURI
       );
     } catch (error: any) {

@@ -72,7 +72,7 @@ export default function NavBar() {
           </HStack>
         </HStack>
 
-        <ConnectButton />
+        <ConnectButton showBalance={false} chainStatus="icon" />
       </Flex>
 
       {isOpen ? (
