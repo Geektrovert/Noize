@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   Box,
   Center,
@@ -9,7 +9,7 @@ import {
   Button,
 } from "@chakra-ui/react";
 
-import getWeb3Storage from "../../libs/web3.storage";
+import useMakePurchase from "../../hooks/useMakePurchase";
 
 export type ProductProps = {
   id: number;
@@ -21,15 +21,10 @@ export type ProductProps = {
   sellable: boolean;
 };
 
-export default function Product({
-  id,
-  name,
-  owner,
-  creator,
-  price,
-  image_url,
-  sellable,
-}: ProductProps) {
+export default function Product({ id, name, price, image_url }: ProductProps) {
+  const [isLoading, setLoading] = useState(false);
+  const makePurchase = useMakePurchase();
+
   return (
     <Center py={12}>
       <Box
@@ -103,6 +98,14 @@ export default function Product({
             fontWeight: 600,
           }}
           rounded="full"
+          isLoading={isLoading}
+          loadingText="Purchasing"
+          onClick={() => {
+            setLoading(true);
+            makePurchase(id, price)
+              .catch((e) => console.log(e))
+              .finally(() => setLoading(false));
+          }}
         >
           Buy Now
         </Button>
