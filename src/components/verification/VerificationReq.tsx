@@ -14,11 +14,14 @@ import {
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useAtomValue } from "jotai";
 
 import {
   verificationSchema,
   type VerificationData,
 } from "../../schemas/verificationReqSchema";
+import useEncryptVerificationData from "../../hooks/useEncryptVerificationData";
+import { verificationAtom } from "../../atoms/verificationAtom";
 
 type VerificationReqModalProps = {
   isOpen: boolean;
@@ -29,17 +32,22 @@ export default function VerificationReqModal({
   isOpen,
   onClose,
 }: VerificationReqModalProps) {
+  const { mutateAsync: encrypt, isLoading } = useEncryptVerificationData();
   const {
     register,
     handleSubmit,
-    setValue,
-    watch,
     formState: { errors, isSubmitting },
   } = useForm<VerificationData>({
     resolver: yupResolver(verificationSchema),
   });
+  const encryptedData = useAtomValue(verificationAtom);
 
-  const onSubmit = async (data: VerificationData) => console.log({ data });
+  const onSubmit = async (data: VerificationData) =>
+    encrypt(data)
+      .then(() => {
+        console.log(encryptedData);
+      })
+      .finally(onClose);
 
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
@@ -105,6 +113,7 @@ export default function VerificationReqModal({
             color="purple.50"
             rounded="full"
             _hover={{ bgColor: "purple.600" }}
+            isLoading={isLoading}
           >
             Request
           </Button>
