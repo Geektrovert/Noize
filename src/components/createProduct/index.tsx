@@ -44,12 +44,10 @@ export default function JoinOurTeam() {
         data.price,
         CID
       );
-      console.log({ result });
-    } catch (error) {
-      console.error({ error });
+    } catch (error: any) {
       toast({
         title: "Error",
-        description: "Error uploading image",
+        description: error.message ?? "Something went wrong",
         status: "error",
         duration: 5000,
         isClosable: true,
