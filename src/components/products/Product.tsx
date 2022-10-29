@@ -1,16 +1,12 @@
 import {
   Box,
   Center,
-  useColorModeValue,
   Heading,
   Text,
   Stack,
   Image,
   Button,
 } from "@chakra-ui/react";
-
-const IMAGE =
-  "https://images.unsplash.com/photo-1518051870910-a46e30d9db16?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1350&q=80";
 
 export default function Product() {
   return (
@@ -20,7 +16,7 @@ export default function Product() {
         p={6}
         maxW={"330px"}
         w={"full"}
-        bg={useColorModeValue("white", "gray.800")}
+        bg="gray.800"
         boxShadow={"2xl"}
         rounded={"lg"}
         pos={"relative"}
@@ -58,12 +54,12 @@ export default function Product() {
             alt="An image of the product"
           />
         </Box>
-        <Stack pt={10} align={"center"}>
+        <Stack pt={10} align={"center"} color="gray.50">
           <Heading fontSize={"2xl"} fontFamily={"body"} fontWeight={500}>
             Aesthetic Sculpture
           </Heading>
           <Stack direction={"row"} align={"center"}>
-            <Text textDecoration={"line-through"} color={"gray.600"}>
+            <Text textDecoration={"line-through"} color={"gray.400"}>
               899
             </Text>
             <Text fontWeight={800} fontSize={"lg"}>

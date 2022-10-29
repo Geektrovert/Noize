@@ -24,6 +24,7 @@ export default function CallToActionWithVideo() {
           lineHeight={1.1}
           fontWeight={600}
           textAlign={{ base: "center", lg: "left" }}
+          color="purple.50"
         >
           <Text
             as="span"
