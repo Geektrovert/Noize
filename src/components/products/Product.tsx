@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import {
   Box,
   Center,
@@ -8,7 +9,27 @@ import {
   Button,
 } from "@chakra-ui/react";
 
-export default function Product() {
+import getWeb3Storage from "../../libs/web3.storage";
+
+export type ProductProps = {
+  id: number;
+  name: string;
+  owner: string;
+  creator: string;
+  price: number;
+  image_url: string;
+  sellable: boolean;
+};
+
+export default function Product({
+  id,
+  name,
+  owner,
+  creator,
+  price,
+  image_url,
+  sellable,
+}: ProductProps) {
   return (
     <Center py={12}>
       <Box
@@ -35,7 +56,7 @@ export default function Product() {
             pos: "absolute",
             top: 5,
             left: 0,
-            backgroundImage: `url(/hero.avif)`,
+            backgroundImage: `url(${image_url})`,
             filter: "blur(15px)",
             zIndex: -1,
           }}
@@ -50,32 +71,35 @@ export default function Product() {
             height={230}
             width={282}
             objectFit={"cover"}
-            src="/hero.avif"
+            src={image_url}
             alt="An image of the product"
+            fallback={
+              <Image
+                src="/loading.gif"
+                objectFit={"cover"}
+                height={230}
+                rounded={"lg"}
+                width={282}
+                alt="Loading Image"
+              />
+            }
           />
         </Box>
         <Stack pt={10} align={"center"} color="gray.50">
-          <Heading fontSize={"2xl"} fontFamily={"body"} fontWeight={500}>
-            Aesthetic Sculpture
+          <Heading fontSize="2xl" fontWeight={500}>
+            {name}
           </Heading>
-          <Stack direction={"row"} align={"center"}>
-            <Text textDecoration={"line-through"} color={"gray.400"}>
-              899
-            </Text>
-            <Text fontWeight={800} fontSize={"lg"}>
-              600 USDC
-            </Text>
-          </Stack>
+          <Text fontSize="md" color="purple.100">
+            {price.toString()}&nbsp;USDC
+          </Text>
         </Stack>
 
         <Button
-          bgColor="purple.500"
-          color="purple.50"
+          w="full"
           size="sm"
-          mt={2}
+          mt={4}
           ml="auto"
           _hover={{
-            bgColor: "purple.600",
             fontWeight: 600,
           }}
           rounded="full"
