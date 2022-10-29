@@ -8,8 +8,10 @@ import {
   Icon,
 } from "@chakra-ui/react";
 import { FiKey, FiHexagon, FiRewind } from "react-icons/fi";
+import { useRouter } from "next/router";
 
 export default function CallToActionWithVideo() {
+  const router = useRouter();
   return (
     <Flex
       w="100vw"
@@ -49,6 +51,7 @@ export default function CallToActionWithVideo() {
             fontWeight="normal"
             _hover={{ fontWeight: 600 }}
             px={6}
+            onClick={() => router.push("/create")}
           >
             Create
           </Button>
@@ -59,6 +62,7 @@ export default function CallToActionWithVideo() {
             px={6}
             bgColor="purple.500"
             _hover={{ bgColor: "purple.600", fontWeight: 600 }}
+            onClick={() => router.push("/explore")}
           >
             Explore
           </Button>
