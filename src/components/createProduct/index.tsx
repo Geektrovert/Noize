@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Box,
   Flex,
@@ -7,9 +8,62 @@ import {
   Container,
   Input,
   Button,
+  FormControl,
+  FormErrorMessage,
+  useToast,
 } from "@chakra-ui/react";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useContract, useAccount, useSigner } from "wagmi";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
+
+import getWeb3Storage from "../../libs/web3.storage";
+import { productSchema, type ProductSchema } from "../../schemas/productSchema";
+import { STORE_CONTRACT_ADDRESS } from "../../configs/constants";
+import storeABI from "../../abis/store.json";
 
 export default function JoinOurTeam() {
+  const toast = useToast();
+  const { address } = useAccount();
+  const { data: signer } = useSigner();
+  const web3Storage = getWeb3Storage();
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    watch,
+    formState: { errors, isSubmitting, isValid },
+  } = useForm<ProductSchema>({
+    resolver: yupResolver(productSchema),
+  });
+
+  const contract = useContract({
+    address: STORE_CONTRACT_ADDRESS,
+    abi: storeABI,
+    signerOrProvider: signer,
+  });
+
+  const onSubmit = async (data: ProductSchema) => {
+    try {
+      const CID = await web3Storage.put([data.image]);
+      const result = await contract?.functions.createProduct(
+        data.name,
+        data.price,
+        CID
+      );
+      console.log({ result });
+    } catch (error) {
+      console.error({ error });
+      toast({
+        title: "Error",
+        description: "Error uploading image",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+  };
+
   return (
     <Container
       as={Flex}
@@ -41,65 +95,98 @@ export default function JoinOurTeam() {
           </Text>
         </Stack>
 
-        <Box as="form" mt={10}>
+        <Box as="form" mt={10} onSubmit={handleSubmit(onSubmit)}>
           <Stack spacing={4}>
-            <Input
-              placeholder="Product Name"
-              bg="gray.100"
-              border={0}
-              color="gray.500"
-              _placeholder={{
-                color: "gray.500",
-              }}
-            />
-            <Input
-              placeholder="Product Price"
-              bg="gray.100"
-              border={0}
-              color="gray.500"
-              _placeholder={{
-                color: "gray.500",
-              }}
-            />
-            <Input
-              type="file"
-              placeholder="Image"
-              bg="gray.100"
-              border={0}
-              color="gray.500"
-              _placeholder={{
-                color: "gray.500",
-              }}
-              sx={{
-                "&::-webkit-file-upload-button, &::file-selector-button": {
-                  borderColor: "transparent",
-                  borderWidth: 0,
-                  bgColor: "purple.100",
-                  color: "purple.700",
-                  rounded: "lg",
-                  mt: "7px",
-                },
-                _hover: {
+            <FormControl isInvalid={!!errors.name}>
+              <Input
+                id="name"
+                placeholder="Product Name"
+                bg="gray.100"
+                border={0}
+                color="gray.500"
+                _placeholder={{
+                  color: "gray.500",
+                }}
+                {...register("name")}
+              />
+              {errors.name && (
+                <FormErrorMessage>{errors.name.message}</FormErrorMessage>
+              )}
+            </FormControl>
+            <FormControl isInvalid={!!errors.price}>
+              <Input
+                type="number"
+                placeholder="Product Price in USDC"
+                bg="gray.100"
+                border={0}
+                color="gray.500"
+                _placeholder={{
+                  color: "gray.500",
+                }}
+                {...register("price")}
+              />
+              {errors.price && (
+                <FormErrorMessage>{errors.price.message}</FormErrorMessage>
+              )}
+            </FormControl>
+            <FormControl isInvalid={!!errors.image}>
+              <Input
+                type="file"
+                accept="image/*"
+                placeholder="Image"
+                bg="gray.100"
+                border={0}
+                color="gray.500"
+                _placeholder={{
+                  color: "gray.500",
+                }}
+                sx={{
                   "&::-webkit-file-upload-button, &::file-selector-button": {
-                    borderColor: "purple.700",
+                    borderColor: "transparent",
+                    borderWidth: 0,
+                    bgColor: "purple.100",
+                    color: "purple.700",
+                    rounded: "lg",
+                    mt: "7px",
                   },
-                },
-              }}
-            />
+                  _hover: {
+                    "&::-webkit-file-upload-button, &::file-selector-button": {
+                      borderColor: "purple.700",
+                    },
+                  },
+                }}
+                onChange={(e) =>
+                  setValue("image", e.target.files?.[0] ?? undefined)
+                }
+              />
+              {errors.image && (
+                <FormErrorMessage>
+                  {errors.image.message?.toString()}
+                </FormErrorMessage>
+              )}
+            </FormControl>
           </Stack>
 
-          <Button
-            mt={8}
-            w="full"
-            rounded="full"
-            bgGradient="linear(to-r, pink.500, purple.500)"
-            _hover={{
-              bgGradient: "linear(to-r, red.500, pink.500)",
-              fontWeight: 800,
-            }}
-          >
-            Submit
-          </Button>
+          {address ? (
+            <Button
+              type="submit"
+              mt={8}
+              w="full"
+              rounded="full"
+              bgGradient="linear(to-r, pink.500, purple.500)"
+              _hover={{
+                bgGradient: "linear(to-r, red.500, pink.500)",
+                fontWeight: 800,
+              }}
+              isLoading={isSubmitting}
+            >
+              Submit
+            </Button>
+          ) : (
+            <Flex mt={3} justify="center">
+              <ConnectButton />
+            </Flex>
+          )}
         </Box>
       </Stack>
     </Container>
