@@ -11,7 +11,7 @@ export default async function handler(
     const provider = new ethers.providers.JsonRpcProvider(
       "https://rpc-mumbai.maticvigil.com/"
     );
-    const contractAddress = process.env.SELLER_VERIFICATION as string;
+    const contractAddress = process.env.NEXT_PUBLIC_SELLER_VERIF_CONTRACT as string;
     const contract = new ethers.Contract(
       contractAddress,
       sellerVerfication,
