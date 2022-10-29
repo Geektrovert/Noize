@@ -1,6 +1,6 @@
 # Noize
 
-Full-stack codebase for Noize, a P2P handicraft marketplace, utilizing the L2 `Polygon` blockchain.
+Full-stack codebase for Noize, a P2P handicraft marketplace, utilizing the L2 `Polygon` blockchain. Currently we only support PoS USDC on Polygon.
 
 ## Tech Stack
 
