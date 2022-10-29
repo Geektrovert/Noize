@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {
   Box,
   Flex,
@@ -14,49 +13,49 @@ import {
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useContract, useAccount, useSigner } from "wagmi";
+import { useAccount } from "wagmi";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { uuid } from "uuidv4";
 
 import getWeb3Storage from "../../libs/web3.storage";
 import { productSchema, type ProductSchema } from "../../schemas/productSchema";
-import { STORE_CONTRACT_ADDRESS } from "../../configs/constants";
-import storeABI from "../../abis/store.json";
+import useStoreContract from "../../hooks/useStoreContract";
 
 export default function JoinOurTeam() {
   const toast = useToast();
   const { address } = useAccount();
-  const { data: signer } = useSigner();
   const web3Storage = getWeb3Storage();
   const {
     register,
     handleSubmit,
     setValue,
     watch,
-    formState: { errors, isSubmitting, isValid },
+    formState: { errors, isSubmitting },
   } = useForm<ProductSchema>({
     resolver: yupResolver(productSchema),
   });
 
-  const contract = useContract({
-    address: STORE_CONTRACT_ADDRESS,
-    abi: storeABI,
-    signerOrProvider: signer,
-  });
+  const storeContract = useStoreContract();
 
   const onSubmit = async (data: ProductSchema) => {
     try {
-      const CID = await web3Storage.put([data.image]);
-      const result = await contract?.functions.createProduct(
+      const ext = data.image.name.split(".").pop();
+      const fileName = `${uuid()}.${ext}`;
+      const newFile = new File([data.image], fileName, {
+        type: data.image.type,
+      });
+      const CID = await web3Storage.put([newFile], { name: fileName });
+      const imageURI = `https://${CID}.ipfs.dweb.link/${fileName}`;
+
+      const result = await storeContract?.functions.createProduct(
         data.name,
         data.price,
-        CID
+        imageURI
       );
-      console.log({ result });
-    } catch (error) {
-      console.error({ error });
+    } catch (error: any) {
       toast({
         title: "Error",
-        description: "Error uploading image",
+        description: error.message ?? "Something went wrong",
         status: "error",
         duration: 5000,
         isClosable: true,

@@ -6,7 +6,7 @@ const fonts = {
   mono: `'JetBrains Mono', monospace`,
 };
 
-const theme: ThemeConfig = extendTheme({
+const theme = extendTheme({
   semanticTokens: {
     colors: {
       text: {
@@ -27,8 +27,10 @@ const theme: ThemeConfig = extendTheme({
     black: "#16161D",
   },
   fonts,
-  initialColorMode: "dark",
-  useSystemColorMode: false,
+  config: {
+    initialColorMode: "dark",
+    useSystemColorMode: false,
+  },
 });
 
 export default theme;
