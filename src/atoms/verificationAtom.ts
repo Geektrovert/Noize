@@ -1,8 +1,8 @@
 import { atom } from "jotai";
 
 type VerificationState = {
-  name: string;
-  nid: string;
+  hashName: string;
+  encryptNID: string;
 };
 
 export const verificationAtom = atom<VerificationState | null>(null);
