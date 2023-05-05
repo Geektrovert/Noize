@@ -1,5 +1,0 @@
-Name: "Jane Smith"
-Age: "25"
-Profession: "Marketing Manager"
-Business Type: "Retail"
-Years of Experience: "3"
